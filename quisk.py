@@ -199,7 +199,33 @@ def round(x):	# round float to nearest integer
     return int(x + 0.5)
   else:
     return - int(-x + 0.5)
-    
+
+def GdkIsWayland():	# True if wxGTK is drawing through GDK's Wayland backend
+  try:
+    import ctypes
+    gdk = ctypes.CDLL('libgdk-3.so.0')
+    gobject = ctypes.CDLL('libgobject-2.0.so.0')
+    gdk.gdk_display_get_default.restype = ctypes.c_void_p
+    gobject.g_type_name_from_instance.restype = ctypes.c_char_p
+    gobject.g_type_name_from_instance.argtypes = [ctypes.c_void_p]
+    display = gdk.gdk_display_get_default()
+    return bool(display) and gobject.g_type_name_from_instance(display) == b'GdkWaylandDisplay'
+  except Exception:
+    return False
+
+def GetScreenGeometry():	# Return x, y, width, height of display 0 in window units
+  # On a scaled display, GDK's Wayland backend gives the monitor size in physical pixels,
+  # but window sizes and positions are in logical pixels.  The X11 backend, Windows and
+  # macOS give the size in the same units as window sizes.
+  display = wx.Display()
+  x, y, width, height = display.GetGeometry()
+  if 'wxGTK' in wx.PlatformInfo:
+    scale = display.GetScaleFactor()
+    if scale > 1 and GdkIsWayland():
+      x, y = int(x / scale), int(y / scale)
+      width, height = int(width / scale), int(height / scale)
+  return x, y, width, height
+
 def str2freq (freq):
   if '.' in freq:
     freq = int(float(freq) * 1E6 + 0.1)
@@ -4058,7 +4084,7 @@ class App(wx.App):
     self.tci_modulation = ''
     self.tci_split_enable = 0
     # get the screen size - thanks to Lucian Langa
-    x, y, self.screen_width, self.screen_height = wx.Display().GetGeometry()	# Using display index 0
+    x, y, self.screen_width, self.screen_height = GetScreenGeometry()	# Using display index 0
     self.Bind(wx.EVT_IDLE, self.OnIdle)
     self.Bind(wx.EVT_QUERY_END_SESSION, self.OnEndSession)
     # Restore persistent program state
