@@ -3474,7 +3474,9 @@ static int quisk_hermes_is_ready(int rx_udp_socket)
 		quisk_multirx_state++;
 		return 0;
 	case 3:
-		quisk_multirx_count = quisk_pc_to_hermes[3] >> 3 & 0x7;		// number of receivers
+		quisk_multirx_count = quisk_pc_to_hermes[3] >> 3 & 0xF;		// number of receivers, C4[6:3]
+		if (quisk_multirx_count > QUISK_MAX_SUB_RECEIVERS)
+			quisk_multirx_count = QUISK_MAX_SUB_RECEIVERS;
 		for (i = 0; i < quisk_multirx_count; i++)
 			if ( ! multirx_fft_data[i].samples)		// Check that buffer exists
 				multirx_fft_data[i].samples = (fftw_complex *)malloc(multirx_fft_width * sizeof(fftw_complex));
@@ -3801,7 +3803,7 @@ static int read_rx_udp10(complex double * samp)	// Read samples from UDP using t
 		}
 	}
 #endif
-	if ((quisk_pc_to_hermes[3] >> 3 & 0x7) != quisk_multirx_count &&	// change in number of receivers
+	if ((quisk_pc_to_hermes[3] >> 3 & 0xF) != quisk_multirx_count &&	// change in number of receivers
 		( ! quisk_multirx_count || multirx_fft_next_state == 2)) {		// wait until the current FFT is finished
 			quisk_multirx_state = 0;		// Do not change receiver count without stopping Hermes and restarting
 	}

@@ -38,12 +38,15 @@ name2format = {
   "digital_rx1_name":('text', ''), "digital_rx2_name":('text', ''), "digital_rx3_name":('text', ''),
   "digital_rx4_name":('text', ''), "digital_rx5_name":('text', ''), "digital_rx6_name":('text', ''),
   "digital_rx7_name":('text', ''), "digital_rx8_name":('text', ''), "digital_rx9_name":('text', ''),
+  "digital_rx10_name":('text', ''), "digital_rx11_name":('text', ''),
   "win_digital_rx1_name":('text', ''), "win_digital_rx2_name":('text', ''), "win_digital_rx3_name":('text', ''),
   "win_digital_rx4_name":('text', ''), "win_digital_rx5_name":('text', ''), "win_digital_rx6_name":('text', ''),
   "win_digital_rx7_name":('text', ''), "win_digital_rx8_name":('text', ''), "win_digital_rx9_name":('text', ''),
+  "win_digital_rx10_name":('text', ''), "win_digital_rx11_name":('text', ''),
   "lin_digital_rx1_name":('text', ''), "lin_digital_rx2_name":('text', ''), "lin_digital_rx3_name":('text', ''),
   "lin_digital_rx4_name":('text', ''), "lin_digital_rx5_name":('text', ''), "lin_digital_rx6_name":('text', ''),
   "lin_digital_rx7_name":('text', ''), "lin_digital_rx8_name":('text', ''), "lin_digital_rx9_name":('text', ''),
+  "lin_digital_rx10_name":('text', ''), "lin_digital_rx11_name":('text', ''),
 }
 
 # Increasing the software version will display a message to re-read the soapy device.
@@ -3703,6 +3706,8 @@ class RadioSound(BaseWindow):		# The Sound page in the second-level notebook for
     ('', '', '', '', 'digital_rx7_name'),
     ('', '', '', '', 'digital_rx8_name'),
     ('', '', '', '', 'digital_rx9_name'),
+    ('', '', '', '', 'digital_rx10_name'),
+    ('', '', '', '', 'digital_rx11_name'),
     )
   hRx0 = "This is almost the same as the radio sound, but it is sent to a digital mode program on a different sound device."\
 " It is analog audio and it is only sent if one of the DGT- modes is selected."\

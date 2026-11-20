@@ -265,8 +265,8 @@ class Hardware(BaseHardware):
               num_rx = int(data[0x13])
               if num_rx < 1:
                 num_rx = 1
-              elif num_rx > 10:
-                num_rx = 10
+              elif num_rx > 12:
+                num_rx = 12
             else:
               num_rx = 1
             dta = data[3:10]
@@ -274,6 +274,7 @@ class Hardware(BaseHardware):
             dta.append(num_rx)
             dta.append(data[10])
             st = 'Capture from Hermes: Mac %2x:%2x:%2x:%2x:%2x:%2x, Code version %d.%d, Rx %d, ID %d' % tuple(dta)
+            self.hermes_num_rx = num_rx		# receivers the gateware reports
             self.hermes_mac = data[3:9]
             self.hermes_ip = addr[0]
             self.hermes_code_version = data[9]
@@ -683,7 +684,7 @@ class Hardware(BaseHardware):
     QS.pc_to_hermes(self.pc2hermes)
     if DEBUG: print("Change tx_level to", tx_level)
   def MultiRxCount(self, count):	# count == number of additional receivers besides the Tx/Rx receiver: 1, 2, 3
-    # C0 index == 0, C4[5:3]: number of receivers 0b000 -> one receiver; C4[2] duplex on
+    # C0 index == 0, C4[6:3]: number of receivers 0b0000 -> one receiver; C4[2] duplex on
     self.pc2hermes[3] = 0x04 | count << 3
     QS.pc_to_hermes(self.pc2hermes)
     if DEBUG: print("Change MultiRx count to", count)

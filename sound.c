@@ -60,12 +60,12 @@ struct sound_dev quisk_Playback;
 struct sound_dev quisk_MicPlayback;
 
 static struct sound_dev Capture, MicCapture, DigitalInput, DigitalOutput, RawSamplePlayback;
-static struct sound_dev dr1, dr2, dr3, dr4, dr5, dr6, dr7, dr8, dr9;		// sound output for digital sub-receivers
+static struct sound_dev dr1, dr2, dr3, dr4, dr5, dr6, dr7, dr8, dr9, dr10, dr11;		// sound output for digital sub-receivers
 // These are arrays of all capture and playback devices, and MUST end with NULL:
 static struct sound_dev * CaptureDevices[] = {&Capture, &MicCapture, &DigitalInput, NULL};
 struct sound_dev * quiskPlaybackDevices[QUISK_INDEX_SUB_RX1 + QUISK_MAX_SUB_RECEIVERS + 1] = {
 	&quisk_Playback, &quisk_MicPlayback, &DigitalOutput, &RawSamplePlayback,
-	&dr1, &dr2, &dr3, &dr4, &dr5, &dr6, &dr7, &dr8, &dr9,
+	&dr1, &dr2, &dr3, &dr4, &dr5, &dr6, &dr7, &dr8, &dr9, &dr10, &dr11,
 	NULL};
 
 static SOCKET radio_sound_socket = INVALID_SOCKET;		// send radio sound samples to a socket

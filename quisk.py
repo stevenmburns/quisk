@@ -3307,7 +3307,10 @@ class MultiReceiverScreen(wx.SplitterWindow):
         pane.is_playing = False
   def OnAddReceiver(self, event=None, hide_it=False):
     index = len(self.receiver_list)
-    if index >= 7:
+    # Seven sub-receivers as before; more if the gateware reports more
+    # receivers (Hermes-Lite 2 builds can have up to 12, i.e. 11 sub-receivers).
+    max_sub = max(7, min(11, getattr(Hardware, 'hermes_num_rx', 0) - 1))
+    if index >= max_sub:
       return
     if index == 0:
       pane1 = MultiRxGraph(self, self.data_width, self.graph_width, index)
@@ -4588,6 +4591,8 @@ class App(wx.App):
         ("digital_rx7_name",		1, 10),
         ("digital_rx8_name",		1, 11),
         ("digital_rx9_name",		1, 12),
+        ("digital_rx10_name",		1, 13),
+        ("digital_rx11_name",		1, 14),
         ("name_of_sound_capt",		0, 0),
         ("microphone_name",		0, 1),
         ("digital_input_name",		0, 2)

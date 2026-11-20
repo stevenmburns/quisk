@@ -18,7 +18,7 @@
 #define INTERP_FILTER_TAPS	85		// interpolation filter
 #define MIC_OUT_RATE		48000		// mic post-processing sample rate
 #define PA_LIST_SIZE		16		// max number of pulseaudio devices
-#define QUISK_MAX_SUB_RECEIVERS		9	// Maximum number of sub-receiver channels in addition to the main receiver
+#define QUISK_MAX_SUB_RECEIVERS		11	// Maximum number of sub-receiver channels in addition to the main receiver
 #define QUISK_INDEX_SUB_RX1		4	// Index of sub-receiver Rx1 in quiskPlaybackDevices
 #define START_CW_DELAY_MAX	250		// Maximum delay for start_cw_delay
 
