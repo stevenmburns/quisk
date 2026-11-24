@@ -703,12 +703,13 @@ class Hardware(BaseHardware):
       self.pc2hermes[jndex + 2] = vfo >>  8 & 0xff
       self.pc2hermes[jndex + 3] = vfo       & 0xff
     elif index <= 10:
+      # Receivers 8 to 12 use C0 addresses 0x12 to 0x16. These are past the 17 round-robin
+      # addresses in self.pc2hermes, so send them through the write queue and ask for an ACK.
       C0 = index + 12
-      jndex = C0 * 4
-      self.pc2hermes[jndex    ] = vfo >> 24 & 0xff
-      self.pc2hermes[jndex + 1] = vfo >> 16 & 0xff		# C1, C2, C3, C4: Rx freq, MSB in C1
-      self.pc2hermes[jndex + 2] = vfo >>  8 & 0xff
-      self.pc2hermes[jndex + 3] = vfo       & 0xff
+      self.pc2hermeslitewritequeue[0:5] = (C0 | 0x40, vfo >> 24 & 0xff, vfo >> 16 & 0xff,
+          vfo >> 8 & 0xff, vfo & 0xff)		# C1, C2, C3, C4: Rx freq, MSB in C1
+      self.WriteQueue()
+      return
     QS.pc_to_hermes(self.pc2hermes)
   def SetVNA(self, key_down=None, vna_start=None, vna_stop=None, vna_count=None, do_tx=False):
     if vna_count is not None:	# must be called first
